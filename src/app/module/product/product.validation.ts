@@ -37,7 +37,6 @@ export const productSchemaValidation = z.object({
   updated_at: z.date().optional(),
 });
 
-
 export const productUpdateSchemaValidation = z.object({
   price: z
     .number()
@@ -53,4 +52,3 @@ export const productUpdateSchemaValidation = z.object({
     }),
   updated_at: z.date().optional(),
 });
- 

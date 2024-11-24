@@ -7,7 +7,7 @@ import {
   productUpdateSchemaValidation,
 } from './product.validation';
 
-const createProduct = async (req: Request, res: Response) => {
+const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const productData: TProduct = req.body.product;
     const productValidationByZod = productSchemaValidation.parse(productData);
@@ -78,7 +78,10 @@ const getAllProducts = async (req: Request, res: Response) => {
     });
   }
 };
-const getSpecificProducts = async (req: Request, res: Response) => {
+const getSpecificProducts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
     const productId: string = req.params.productId;
     const result = await databaseControl.getSpecificProductFormDB(productId);
@@ -86,7 +89,7 @@ const getSpecificProducts = async (req: Request, res: Response) => {
     res.status(200).send({
       success: true,
       message: 'new product create successfully',
-      data: result,
+      data: result ? result : {},
     });
   } catch (error) {
     res.status(500).send({
@@ -97,7 +100,10 @@ const getSpecificProducts = async (req: Request, res: Response) => {
   }
 };
 
-const updateSpecificProducts = async (req: Request, res: Response) => {
+const updateSpecificProducts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
     const productId: string = req.params.productId;
     const updateForData: TPriceQuantity = req.body;
@@ -152,9 +158,38 @@ const updateSpecificProducts = async (req: Request, res: Response) => {
   }
 };
 
+const deleteSpecificProducts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const productId: string = req.params.productId;
+    const result = await databaseControl.deleteSpecificProductFormDB(productId);
+
+    if (result.deletedCount === 0) {
+      res.status(404).send({
+        success: true,
+        message: 'Product not found',
+      });
+    }
+    res.status(200).send({
+      success: true,
+      message: 'Product deleted successfully',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: 'Internal server issue. Please try again later.',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};
+
 export const productController = {
   createProduct,
   getAllProducts,
   getSpecificProducts,
   updateSpecificProducts,
+  deleteSpecificProducts,
 };

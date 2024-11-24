@@ -1,7 +1,7 @@
-export type TPriceQuantity ={
+export type TPriceQuantity = {
   quantity: number;
   price: number;
-}
+};
 export type TProduct = {
   name: string;
   brand: string;
@@ -15,6 +15,6 @@ export type TProduct = {
   description: string;
   quantity: number;
   inStock: boolean;
-  created_at?: Date;   
-  updated_at?: Date;   
+  created_at?: Date;
+  updated_at?: Date;
 };

@@ -10,9 +10,10 @@ const getAllProductDB = async () => {
   return result;
 };
 const getSpecificProductFormDB = async (productId: string) => {
-  const result = await Product.find({ _id: productId });
+  const result = await Product.findOne({ _id: productId });
   return result;
 };
+
 const updateSpecificProductFormDB = async (
   productId: string,
   updateForData: TPriceQuantity,
@@ -25,10 +26,16 @@ const updateSpecificProductFormDB = async (
   });
   return result;
 };
+const deleteSpecificProductFormDB = async (productId: string) => {
+  const filter = { _id: productId };
+  const result = await Product.deleteOne(filter);
+  return result;
+};
 
 export const databaseControl = {
   createProductDB,
   getAllProductDB,
   getSpecificProductFormDB,
   updateSpecificProductFormDB,
+  deleteSpecificProductFormDB,
 };

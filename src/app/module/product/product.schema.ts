@@ -44,8 +44,8 @@ const productSchema = new Schema<TProduct>(
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-    versionKey: false,  
-  }
+    versionKey: false,
+  },
 );
 
 export const Product = mongoose.model('productCollection', productSchema);
