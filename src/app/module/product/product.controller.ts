@@ -9,7 +9,7 @@ import {
 
 const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
-    const productData: TProduct = req.body.product;
+    const productData: TProduct = req.body;
     const productValidationByZod = productSchemaValidation.parse(productData);
 
     const result = await databaseControl.createProductDB(
