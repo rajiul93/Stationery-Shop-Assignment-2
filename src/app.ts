@@ -13,4 +13,19 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoute);
+
+app.all('*', (req: Request, res: Response) => {
+  res.status(400).json({
+    success: false,
+    message: 'Route not found',
+  });
+});
+
+app.use((error: unknown, req: Request, res: Response) => {
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error some thing wrong',
+    error: error instanceof Error ? error.message : 'Unknown error',
+  });
+});
 export default app;

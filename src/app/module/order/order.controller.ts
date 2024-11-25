@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { IProduct, TOrder } from './order.interface';
 import { orderDatabaseControl } from './order.service';
 import { orderValidationSchema } from './order.validation';
 
-const createOrder = async (req: Request, res: Response) => {
+const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const orderData: TOrder = req.body;
     const orderDataValidationByZod = orderValidationSchema.parse(orderData);
@@ -60,20 +60,19 @@ const createOrder = async (req: Request, res: Response) => {
         stack: error.stack,
       };
 
-      res.status(400).send(formattedError);
+      res.status(400).json(formattedError);
       return;
     }
-
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    next(error);
   }
 };
 
-const orderRevenue = async (req: Request, res: Response) => {
-  try { 
+const orderRevenue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
     const revenue = await orderDatabaseControl.revenueDataFromDB();
     res.status(200).json({
       message: 'Revenue calculated successfully',
@@ -81,11 +80,7 @@ const orderRevenue = async (req: Request, res: Response) => {
       data: revenue,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    next(error);
   }
 };
 

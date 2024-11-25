@@ -22,7 +22,22 @@ const createOrderDB = async (orderData: TOrder, productData: IProduct) => {
 };
 
 const revenueDataFromDB = async () => {
-  const productData = await Order.find();
+  const productData = await Order.aggregate([
+    {
+      $project: {
+        revenue: { $sum: '$totalPrice' },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: '$revenue' },
+      },
+    },
+    {
+      $project: { totalRevenue: 1, _id: 0 },
+    },
+  ]);
   return productData;
 };
 export const orderDatabaseControl = {
