@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
+import { TProduct } from '../product/product.interface';
 import { IProduct, TOrder } from './order.interface';
 import { orderDatabaseControl } from './order.service';
 import { orderValidationSchema } from './order.validation';
@@ -19,6 +20,13 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
         message: 'Product not found',
       });
     }
+    if ((productData as TProduct)?.quantity <= orderData.quantity) {
+      res.status(201).json({
+        success: false,
+        message: 'maybe quantity are zero or you add many to our stoke',
+      });
+    } 
+
     const product: IProduct = productData as unknown as IProduct;
 
     const newOrder = await orderDatabaseControl.createOrderDB(

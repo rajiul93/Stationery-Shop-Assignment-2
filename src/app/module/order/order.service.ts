@@ -18,6 +18,13 @@ const createOrderDB = async (orderData: TOrder, productData: IProduct) => {
     quantity,
     totalPrice,
   });
+
+  const newQuantityUpdate = { quantity };
+  const filter = { _id: product };
+  await Product.findOneAndUpdate(filter, newQuantityUpdate, {
+    new: true,
+  });
+  
   return order;
 };
 
@@ -40,6 +47,7 @@ const revenueDataFromDB = async () => {
   ]);
   return productData;
 };
+
 export const orderDatabaseControl = {
   findProductDB,
   createOrderDB,
