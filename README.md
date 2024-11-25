@@ -20,13 +20,13 @@
 # Key Endpoints
 ## Products:
 
-POST /api/products: Create a new product.
-GET /api/products: Retrieve all products or search by category.
-GET /api/products/:productId: Get details of a specific product.
-PUT /api/products/:productId: Update product details.
-DELETE /api/products/:productId: Delete a product.
+- POST /api/products: Create a new product.
+- GET /api/products: Retrieve all products or search by category.
+- GET /api/products/:productId: Get details of a specific product.
+- PUT /api/products/:productId: Update product details.
+- DELETE /api/products/:productId: Delete a product.
 
 ## Orders:
 
-POST /api/orders: Place a new order.
-GET /api/orders/revenue: Calculate total revenue.
+- POST /api/orders: Place a new order.
+- GET /api/orders/revenue: Calculate total revenue.
