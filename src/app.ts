@@ -15,7 +15,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoute);
 
 app.all('*', (req: Request, res: Response) => {
-  res.status(400).json({
+  res.status(404).json({
     success: false,
     message: 'Route not found',
   });
