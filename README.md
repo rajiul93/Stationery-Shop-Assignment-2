@@ -43,5 +43,12 @@
     "quantity": 200,
     "inStock": true
 }
-
-### Create a new product post data example
+ 
+```
+### Create a new order post data example
+```json
+{
+  "email": "customer@example.com",
+  "product": "67431567723328e109577983",
+  "quantity": 5
+}
