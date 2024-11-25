@@ -3,8 +3,8 @@ import { Product } from '../product/product.schema';
 import { IProduct, TOrder } from './order.interface';
 import Order from './order.schema';
 
-const findProductDB = async (orderData: TOrder) => {
-  const productData = await Product.findById(orderData.product);
+const findProductDB = async (productId: string) => {
+  const productData = await Product.findById(productId);
   return productData;
 };
 
@@ -19,12 +19,24 @@ const createOrderDB = async (orderData: TOrder, productData: IProduct) => {
     totalPrice,
   });
 
-  const newQuantityUpdate = { quantity };
+  const quantityToReduce = { quantity: productData.quantity - quantity };
   const filter = { _id: product };
-  await Product.findOneAndUpdate(filter, newQuantityUpdate, {
+  await Product.findOneAndUpdate(filter, quantityToReduce, {
     new: true,
   });
-  
+
+  const result = await findProductDB(product);
+
+  if (result?.quantity === 0) {
+    await Product.findOneAndUpdate(
+      filter,
+      { inStock: false },
+      {
+        new: true,
+      },
+    );
+  }
+
   return order;
 };
 

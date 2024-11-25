@@ -11,7 +11,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
     const orderDataValidationByZod = orderValidationSchema.parse(orderData);
 
     const productData = await orderDatabaseControl.findProductDB(
-      orderDataValidationByZod,
+      orderDataValidationByZod.product,
     );
 
     if (!productData) {
@@ -19,13 +19,15 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
         success: false,
         message: 'Product not found',
       });
+      return;
     }
-    if ((productData as TProduct)?.quantity <= orderData.quantity) {
-      res.status(201).json({
+    if ((productData as TProduct)?.quantity + 1 <= orderData.quantity) {
+      res.status(400).json({
         success: false,
         message: 'maybe quantity are zero or you add many to our stoke',
       });
-    } 
+      return;
+    }
 
     const product: IProduct = productData as unknown as IProduct;
 
@@ -33,6 +35,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
       orderData,
       product,
     );
+ 
 
     res.status(201).json({
       success: true,
