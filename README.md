@@ -30,3 +30,16 @@
 
 - POST /api/orders: Place a new order.
 - GET /api/orders/revenue: Calculate total revenue.
+
+### Create a new product post data example
+
+```json
+{
+    "name": "Notebook",
+    "brand": "Moleskine",
+    "price": 10,
+    "category": "Office Supplies",
+    "description": "A high-quality notebook for professionals.",
+    "quantity": 200,
+    "inStock": true
+}
