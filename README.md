@@ -43,3 +43,5 @@
     "quantity": 200,
     "inStock": true
 }
+
+### Create a new product post data example
